@@ -4,7 +4,7 @@ Widget library to pick measurement value from a ruler
 ![Release](https://jitpack.io/v/KasemJaffer/android-ruler.svg)
 https://jitpack.io/#KasemJaffer/android-ruler
 
-![Logo](https://raw.githubusercontent.com/KasemJaffer/android-ruler/master/app/src/main/res/drawable-mdpi/screenshot_1.png)
+![Logo](https://github.com/KasemJaffer/android-ruler/blob/master/app/src/main/res/drawable-mdpi/screenshot_1.jpg)
 
 How to use
 ------------------------
