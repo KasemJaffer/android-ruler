@@ -2,11 +2,13 @@ package co.xtrava.ruler.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RotateDrawable
-import android.support.v4.content.ContextCompat
+import android.os.Build
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -123,7 +125,7 @@ class ScrollingValuePicker : FrameLayout {
             view.getChildAt(0).setBackgroundColor(rulerPrimaryColor)
 
             //Bottom line
-            view.getChildAt(view.childCount-1).setBackgroundColor(rulerPrimaryColor)
+            view.getChildAt(view.childCount - 1).setBackgroundColor(rulerPrimaryColor)
 
 
             val l = view.getChildAt(1) as LinearLayout
@@ -153,7 +155,7 @@ class ScrollingValuePicker : FrameLayout {
         container.addView(mRightSpacer)
 
         val pointer = ImageView(context)
-        val shape = ContextCompat.getDrawable(context, R.drawable.pointer) as LayerDrawable
+        val shape = getDrawable(context, R.drawable.pointer) as LayerDrawable
         val triangle = (shape.findDrawableByLayerId(R.id.triangle) as RotateDrawable).drawable as GradientDrawable
         triangle.setColor(rulerPointerBackgroundColor)
         triangle.setStroke(rulerPointerThickness, rulerPointerOutlineColor)
@@ -213,6 +215,29 @@ class ScrollingValuePicker : FrameLayout {
     private fun Float.dpAsPixels(context: Context): Float {
         val scale = context.resources.displayMetrics.density
         return this * scale
+    }
+
+    private val sLock = Any()
+    private var sTempValue: TypedValue? = null
+    private fun getDrawable(context: Context, id: Int): Drawable? {
+        when {
+            Build.VERSION.SDK_INT >= 21 -> return context.getDrawable(id)
+            Build.VERSION.SDK_INT >= 16 -> return context.resources.getDrawable(id)
+            else -> {
+                val var3 = sLock
+                var resolvedId: Int = 0
+                synchronized(sLock) {
+                    if (sTempValue == null) {
+                        sTempValue = TypedValue()
+                    }
+
+                    context.resources.getValue(id, sTempValue, true)
+                    resolvedId = sTempValue!!.resourceId
+                }
+
+                return context.resources.getDrawable(resolvedId)
+            }
+        }
     }
 
     // do stuff with the scroll listener we created early to make our values usable.

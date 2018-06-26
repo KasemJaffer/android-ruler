@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KasemJaffer:android-ruler:1.0.0'
+    implementation 'com.github.KasemJaffer:android-ruler:1.0.1'
 }
 ```
 
